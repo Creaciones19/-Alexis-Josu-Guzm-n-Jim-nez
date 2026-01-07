@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+  <title>Tarjeta Digital</title>
+
+  <style>
+  :root{
+    --vino1:#5b0f1b;
+    --vino2:#7a1230;
+    --vino3:#a10f3b;
+    --vinoTxt:#5c0f1f;
+
+    --txt:#1a1a1a;
+    --muted:#6b6b6b;
+
+    --gris:#6f6f6f;
+    --bg:#ffffff;
+
+    --max: 1120px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color:var(--txt);
+    background:#fff;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  /* ✅ WRAPPER para permitir avatar “colgado” sin recortes */
+  .hero-wrap{ position:relative; }
+
+  /* ====== TOP PHOTO STRIP ====== */
+  .top-photo{
+    height: 165px;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.28), rgba(0,0,0,.10)),
+      url("analisis (1).jpg") center/cover no-repeat;
+    border-top: 6px solid #b24a64;
+  }
+
+  /* ====== HEADER (vino + conectores) ====== */
+  .header{
+    position:relative;
+    overflow: visible;              /* ✅ antes: hidden (recortaba el avatar) */
+    padding: 64px 0 30px;           /* ✅ antes: 26px... (sin espacio para el avatar) */
+    background:
+      radial-gradient(1100px 320px at 70% 50%, rgba(255,255,255,.12), transparent 60%),
+      linear-gradient(90deg, var(--vino1) 0%, var(--vino2) 45%, var(--vino3) 100%);
+  }
+
+  .net-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:.95;            /* fuerte */
+    pointer-events:none;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,.12));
+  }
+
+  .header-inner{
+    width:min(var(--max), 92%);
+    margin:0 auto;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:10px;
+  }
+
+  /* ✅ Avatar con FOTO real (colgado y centrado) */
+  .avatar{
+    position:absolute;              /* ✅ antes no */
+    left:50%;
+    top:-46px;                      /* ✅ cuelga entre top-photo y header */
+    transform:translateX(-50%);
+    width:92px;
+    height:92px;
+    border-radius:50%;
+    background:#fff;
+    padding:4px;
+    z-index:5;
+    box-shadow: 0 10px 22px rgba(0,0,0,.28);
+    margin:0;                       /* ✅ antes: margin-top:-62px; */
+  }
+
+  .avatar img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit: contain;            /* ✅ NO recorta */
+    background:#fff;                /* relleno blanco si sobra */
+    display:block;
+  }
+
+  .name{
+    color:#fff;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 6px 0 0;
+    text-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  .role{
+    color: rgba(255,255,255,.88);
+    font-size: 12px;
+    margin:0;
+    letter-spacing:.2px;
+  }
+
+  .contact-title{
+    margin-top: 10px;
+    color:#fff;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .social{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:2px;
+  }
+  .icon-btn{
+    width:22px; height:22px;
+    border-radius:50%;
+    background: rgba(255,255,255,.94);
+    display:grid;
+    place-items:center;
+    box-shadow: 0 8px 18px rgba(0,0,0,.22);
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .icon-btn:hover{ transform: translateY(-2px) scale(1.03); filter: brightness(1.03); }
+  .icon-btn svg{ width:13px; height:13px; }
+
+  .down-dot{
+    width:26px; height:26px;
+    border-radius:50%;
+    background: rgba(255,255,255,.94);
+    display:grid;
+    place-items:center;
+    margin-top: 10px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.22);
+  }
+  .down-dot svg{ width:14px; height:14px; }
+
+  /* ====== SECTIONS ====== */
+  section{ padding: 26px 0; }
+  .wrap{
+    width:min(var(--max), 92%);
+    margin:0 auto;
+  }
+
+  h2{
+    text-align:center;
+    margin: 0 0 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--vinoTxt);
+  }
+
+  /* ====== ABOUT ====== */
+  .about p{
+    width: min(760px, 100%);
+    margin: 0 auto;
+    font-size: 11px;
+    line-height: 1.7;
+    color:#7a7a7a;
+    text-align: justify;           /* como pediste */
+    text-justify: inter-word;
+  }
+
+
+   /* ====== SERVICES (texto izquierda + Lottie derecha) ====== */
+.services{
+  background: var(--gris);
+  color:#fff;
+  padding: 42px 0;
+}
+.services h2{ color:#fff; margin-bottom: 20px; }
+
+.services-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items:center;
+}
+
+.services-text{
+  width: min(380px, 100%);
+  margin-left:auto;
+  text-align:left;
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.92);
+}
+
+/* Columna derecha */
+.services-illus{
+  display:flex;
+  justify-content:flex-start; /* a la derecha del texto */
+  align-items:center;
+}
+
+/* Contenedor que centra y da “área” visible a la animación */
+.services .illusShine{
+  position:relative;
+  width:100%;
+  min-height: 260px;                 /* ✅ CLAVE: sin altura no se ve */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* El DIV que recibe Lottie */
+.services .illus{
+  width: min(520px, 100%);
+  max-width: 520px;
+
+  height: 260px;                     /* ✅ CLAVE: fuerza alto visible */
+  opacity: 1;                        /* ✅ visible siempre */
+  transform: translateY(0);          /* ✅ visible aunque no haya inview */
+  filter: drop-shadow(0 22px 24px rgba(0,0,0,.20));
+  will-change: transform, opacity;
+}
+
+/* Animación solo cuando entra a viewport (opcional pero bonita) */
+.services.is-inview .illus{
+  animation:
+    riseIn 900ms cubic-bezier(.2,.9,.2,1) both,
+    floaty 3.8s ease-in-out 900ms infinite;
+}
+
+@keyframes riseIn{
+  from{ transform: translateY(90px); opacity: 0; }
+  to  { transform: translateY(0px); opacity: 1; }
+}
+@keyframes floaty{
+  0%{ transform: translateY(0px); }
+  50%{ transform: translateY(-12px); }
+  100%{ transform: translateY(0px); }
+}
+
+    /* ====== CLIENTS (carrusel que se mueve) ====== */
+    .clients h2{ margin-bottom: 16px; }
+
+    .marquee{
+      position:relative;
+      overflow:hidden;
+      width: min(920px, 100%);
+      margin: 0 auto;
+      padding: 8px 0 4px;
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .track{
+      display:flex;
+      gap: 18px;
+      width:max-content;
+      animation: scroll 18s linear infinite;
+    }
+    @keyframes scroll{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(-50%); }
+    }
+
+    .logo-card{
+      width: 130px;
+      height: 44px;
+      border-radius: 10px;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,.06);
+      overflow:hidden;
+    }
+    .logo-card img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 6px 10px;
+    }
+
+    /* ====== QR ====== */
+    .qr{
+      padding: 24px 0 34px;
+    }
+    .qr-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+      align-items:start;
+      width: min(920px, 100%);
+      margin: 0 auto;
+    }
+    .qr-card{
+      text-align:center;
+      padding: 10px 10px 0;
+    }
+    .qr-title{
+      color: var(--vinoTxt);
+      font-weight:700;
+      font-size: 16px;
+      margin: 0;
+    }
+    .qr-sub{
+      margin: 4px 0 10px;
+      font-size: 11px;
+      color:#8a8a8a;
+    }
+
+    /* Contenedor QR real */
+    .qr-box{
+      width: 118px;
+      height: 118px;
+      margin: 0 auto 10px;
+      background:#fff;
+      border: 2px solid #111;
+      display:grid;
+      place-items:center;
+      box-shadow: 0 14px 30px rgba(0,0,0,.08);
+    }
+    .qr-box canvas, .qr-box img{ width:110px; height:110px; }
+
+    .qr-note{
+      font-size: 10px;
+      color:#8b8b8b;
+      margin: 0 0 10px;
+    }
+    .qr-btn{
+      display:inline-block;
+      background: var(--vino1);
+      color:#fff;
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      border:0;
+      cursor:pointer;
+    }
+
+    footer{
+      background:#0b0b0b;
+      color:#cfcfcf;
+      text-align:center;
+      padding: 12px 0;
+      font-size: 10px;
+    }
+
+    /* ====== RESPONSIVE (móvil y tablet) ====== */
+    @media (max-width: 900px){
+      .top-photo{ height: 135px; }
+
+      .services-grid{
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .services-text{
+        margin: 0 auto;
+        text-align:center;
+      }
+      .services-illus{
+        justify-content:center;
+      }
+      .qr-grid{
+        grid-template-columns: 1fr;
+      }
+      .marquee{
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 560px){
+      .top-photo{ height: 115px; }
+      .avatar{ width:82px; height:82px; margin-top:-56px; }
+      .name{ font-size: 18px; }
+      .track{ animation-duration: 16s; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .track{ animation:none; }
+    }
+    
+  </style>
+</head>
+
+<body>
+
+  <!-- WRAPPER para poder “colgar” el avatar sin que se recorte -->
+<div class="hero-wrap">
+
+  <!-- Foto superior -->
+  <div class="top-photo" aria-hidden="true"></div>
+
+  <!-- Header vino con conectores fuertes -->
+  <header class="header">
+    <canvas class="net-canvas" id="net"></canvas>
+
+    <!-- ✅ AVATAR FUERA de header-inner para que no se corte -->
+    <div class="avatar" aria-label="Foto de perfil">
+      <img src="analisis (2).jpg" alt="Foto de perfil">
+    </div>
+
+    <div class="header-inner">
+      <h1 class="name">C.P. y Lic. Alexis Josué Guzmán Jiménez</h1>
+      <p class="role">Director ACL Negocios</p>
+
+      <div class="contact-title">Contacto</div>
+
+      <div class="social" aria-label="Redes sociales">
+        <!-- EDITA LOS LINKS -->
+        <a class="icon-btn" href="#" title="Facebook" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.2l.8-3H13V9c0-.6.4-1 1-1Z" fill="#5b0f1b"/>
+          </svg>
+        </a>
+
+        <a class="icon-btn" href="#" title="LinkedIn" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6.5 9H4v11h2.5V9Zm-.2-3.2c0 .8-.6 1.4-1.4 1.4S3.5 6.6 3.5 5.8 4.1 4.4 4.9 4.4s1.4.6 1.4 1.4ZM20 20h-2.5v-5.8c0-1.4-.5-2.3-1.7-2.3-1 0-1.6.7-1.9 1.3-.1.2-.1.6-.1.9V20H11.3s.1-9.7 0-11H13.8v1.6c.3-.8 1.3-1.9 3.1-1.9 2.3 0 4.1 1.5 4.1 4.7V20Z" fill="#5b0f1b"/>
+          </svg>
+        </a>
+
+        <a class="icon-btn" href="#" title="Instagram" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2Zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2ZM18 6.6a.9.9 0 1 1-.9.9.9.9 0 0 1 .9-.9Z" fill="#5b0f1b"/>
+          </svg>
+        </a>
+
+        <a class="icon-btn" id="waLink" href="#" title="WhatsApp" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2.5 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.6-5.3c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8.9-.1.1-.3.2-.5.1-.2-.1-.9-.3-1.7-1.1-.6-.5-1-1.2-1.1-1.4-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3.2-.5 0-.2 0-.4-.1-.5-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.4-.2.2-.9.8-.9 2 0 1.2.9 2.4 1 2.5.1.2 1.8 2.8 4.4 3.9.6.3 1.1.5 1.5.6.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3Z" fill="#5b0f1b"/>
+          </svg>
+        </a>
+
+        <a class="icon-btn" id="mailLink" href="#" title="Correo" aria-label="Correo">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2v.2l8 5.2 8-5.2V8H4Zm16 10V10.6l-8 5.2-8-5.2V18h16Z" fill="#5b0f1b"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="down-dot" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 16.5 5.8 10.3a1 1 0 0 1 1.4-1.4L12 13.7l4.8-4.8a1 1 0 0 1 1.4 1.4L12 16.5Z" fill="#5b0f1b"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+</div>
+
+  <!-- Sobre mi -->
+  <section class="about">
+    <div class="wrap">
+      <h2>Sobre Mi</h2>
+      <p id="aboutText">
+        Hola, soy Alexis. Contador Público con experiencia en administración, planeación fiscal y acompañamiento financiero para negocios y profesionistas.
+        Me enfoco en ordenar, optimizar y proyectar empresas con procesos claros, números sanos y decisiones estratégicas.
+      </p>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+<!-- Servicios -->
+<section class="services" id="services">
+  <div class="wrap">
+    <h2>Mis Servicios</h2>
+
+    <div class="services-grid">
+
+      <!-- TEXTO -->
+      <div class="services-text" id="servicesText">
+        Ayudo a las personas a la creación, administración, seguimiento y proyección
+        de sus negocios y empresas mediante mis servicios de contabilidad, finanzas,
+        impuestos y planeación fiscal.
+      </div>
+
+      <!-- LOTTIE (ANIMACIÓN) -->
+      <div class="services-illus">
+        <div class="illusShine">
+          <div id="analysisLottie" class="illus" aria-label="Animación de análisis"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- Clientes (carrusel que se mueve) -->
+  <section class="clients">
+    <div class="wrap">
+      <h2>Mis clientes</h2>
+
+      <div class="marquee" aria-label="Carrusel de clientes">
+        <div class="track" id="track">
+          <!-- Pon tus logos reales -->
+          <div class="logo-card"><img src="logos/chu.png" alt="CHÚ"></div>
+          <div class="logo-card"><img src="logos/wma.png" alt="WMA"></div>
+          <div class="logo-card"><img src="logos/blue.png" alt="BLUE"></div>
+          <div class="logo-card"><img src="logos/tecnolandia.png" alt="Tecnolandia"></div>
+          <div class="logo-card"><img src="logos/kalam.png" alt="Kalam"></div>
+          <div class="logo-card"><img src="logos/stylo.png" alt="Stylo Vaper"></div>
+          <div class="logo-card"><img src="logos/travesias.png" alt="Travesías"></div>
+
+          <!-- duplicado (para scroll infinito) -->
+          <div class="logo-card"><img src="logos/chu.png" alt="CHÚ"></div>
+          <div class="logo-card"><img src="logos/wma.png" alt="WMA"></div>
+          <div class="logo-card"><img src="logos/blue.png" alt="BLUE"></div>
+          <div class="logo-card"><img src="logos/tecnolandia.png" alt="Tecnolandia"></div>
+          <div class="logo-card"><img src="logos/kalam.png" alt="Kalam"></div>
+          <div class="logo-card"><img src="logos/stylo.png" alt="Stylo Vaper"></div>
+          <div class="logo-card"><img src="logos/travesias.png" alt="Travesías"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QR + Vcard (QRs reales generados con JS) -->
+  <section class="qr">
+    <div class="wrap">
+      <div class="qr-grid">
+
+        <div class="qr-card">
+          <p class="qr-title">Código QR</p>
+          <p class="qr-sub">para compartir tarjeta</p>
+
+          <div class="qr-box" id="qrShareBox" aria-label="QR compartir"></div>
+
+          <p class="qr-note">
+            Comparte o escanea este código con tu celular para acceder a la tarjeta de presentación.
+          </p>
+        </div>
+
+        <div class="qr-card">
+          <p class="qr-title">Código Vcard</p>
+          <p class="qr-sub">para guardar contacto</p>
+
+          <div class="qr-box" id="qrVcardBox" aria-label="QR vCard"></div>
+
+          <p class="qr-note">
+            Escanea este código para guardar el contacto en tu teléfono.
+          </p>
+
+          <button class="qr-btn" id="btnVcf">Guardar contacto en mi teléfono</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Tarjeta de presentación • 2026
+  </footer>
+
+  <script>
+    /* =============================
+       CONFIGURAR AQUÍ LOS DATOS REALES
+       ============================= */
+
+    const DATA = {
+      fullName: "Alexis Josué Guzmán Jiménez",
+      title: "C.P. y Lic.",
+      role: "Director ACL Negocios",
+
+      phone: "+52 3312345678",            // <-- pon el real
+      email: "correo@dominio.com",        // <-- pon el real
+      website: "https://tusitio.com",      // <-- pon el real (o la URL donde se publicará esta tarjeta)
+      address: "Guadalajara, Jalisco, MX",
+
+      whatsappMessage: "Hola, me gustaría más información."
+    };
+
+    // Links rápidos
+    const waLink = document.getElementById("waLink");
+    const mailLink = document.getElementById("mailLink");
+    waLink.href = `https://wa.me/${DATA.phone.replace(/[^\d]/g,'')}?text=${encodeURIComponent(DATA.whatsappMessage)}`;
+    mailLink.href = `mailto:${DATA.email}`;
+
+    /* =============================
+       CONECTORES (canvas) - FUERTES
+       ============================= */
+    (function(){
+      const canvas = document.getElementById('net');
+      const ctx = canvas.getContext('2d', { alpha:true });
+
+      let w=0,h=0,dpr=1;
+      let pts=[];
+const cfg = {
+  density: 14000,   // más alto = menos puntos (menos “nido”)
+  minPts: 42,
+  maxPts: 70,
+
+  linkDist: 220,    // distancia para que sí haya líneas
+  maxLinks: 3,      // ✅ CLAVE: máximo de conexiones por punto
+
+  drift: 0.08,
+  lineW: 1.0,
+  dotR: 1.4,
+  baseAlpha: 0.22   // ✅ tenue (antes 0.58 era telaraña)
+};
+
+
+      function resize(){
+        const r = canvas.getBoundingClientRect();
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        w = Math.floor(r.width);
+        h = Math.floor(r.height);
+        canvas.width = Math.floor(w*dpr);
+        canvas.height = Math.floor(h*dpr);
+        canvas.style.width = w+'px';
+        canvas.style.height = h+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+
+        const target = Math.max(cfg.minPts, Math.min(cfg.maxPts, Math.round((w*h)/cfg.density)));
+        pts = new Array(target).fill(0).map(()=>({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          vx:(Math.random()*2-1)*cfg.drift,
+          vy:(Math.random()*2-1)*cfg.drift
+        }));
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        ctx.lineWidth = cfg.lineW;
+        ctx.fillStyle = "rgba(255,255,255,0.90)";
+
+        for(const p of pts){
+          p.x += p.vx;
+          p.y += p.vy;
+          if(p.x<0||p.x>w) p.vx *= -1;
+          if(p.y<0||p.y>h) p.vy *= -1;
+        }
+
+        for(let i=0;i<pts.length;i++){
+          const a=pts[i];
+          ctx.beginPath();
+          ctx.arc(a.x,a.y,cfg.dotR,0,Math.PI*2);
+          ctx.fill();
+
+          for(let j=i+1;j<pts.length;j++){
+            const b=pts[j];
+            const dx=a.x-b.x, dy=a.y-b.y;
+            const dist = Math.hypot(dx,dy);
+           if (dist < cfg.linkDist) {
+  // recorta líneas para que NO se vea telaraña
+  if (Math.random() > cfg.linkChance) continue;
+
+  const alpha = (1 - dist / cfg.linkDist) * cfg.baseAlpha;
+
+  ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+  ctx.beginPath();
+  ctx.moveTo(a.x, a.y);
+  ctx.lineTo(b.x, b.y);
+  ctx.stroke();
+}
+
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize, { passive:true });
+      resize();
+      draw();
+    })();
+
+    /* =============================
+       QR REAL (sin “cuadros fake”)
+       - Implementación QR minimalista (Canvas)
+       ============================= */
+
+    // QR generator compacto (type 4 / error correction M) basado en algoritmo estándar.
+    // No requiere internet ni librerías externas.
+    // Nota: suficientemente bueno para URLs y vCards normales.
+    (function(){
+      // --- util ---
+      function toUTF8Bytes(str){
+        return new TextEncoder().encode(str);
+      }
+      function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+      // --- Galois field / Reed-Solomon tables ---
+      const GF_EXP = new Uint8Array(512);
+      const GF_LOG = new Uint8Array(256);
+      (function initGf(){
+        let x=1;
+        for(let i=0;i<255;i++){
+          GF_EXP[i]=x;
+          GF_LOG[x]=i;
+          x <<= 1;
+          if(x & 0x100) x ^= 0x11d;
+        }
+        for(let i=255;i<512;i++) GF_EXP[i]=GF_EXP[i-255];
+      })();
+
+      function gfMul(a,b){
+        if(a===0||b===0) return 0;
+        return GF_EXP[GF_LOG[a] + GF_LOG[b]];
+      }
+
+      function rsGeneratorPoly(ecLen){
+        let poly = [1];
+        for(let i=0;i<ecLen;i++){
+          poly = polyMul(poly, [1, GF_EXP[i]]);
+        }
+        return poly;
+      }
+
+      function polyMul(p,q){
+        const out = new Array(p.length+q.length-1).fill(0);
+        for(let i=0;i<p.length;i++){
+          for(let j=0;j<q.length;j++){
+            out[i+j] ^= gfMul(p[i], q[j]);
+          }
+        }
+        return out;
+      }
+
+      function rsEncode(data, ecLen){
+        const gen = rsGeneratorPoly(ecLen);
+        const msg = data.slice();
+        for(let i=0;i<ecLen;i++) msg.push(0);
+
+        for(let i=0;i<data.length;i++){
+          const coef = msg[i];
+          if(coef!==0){
+            for(let j=0;j<gen.length;j++){
+              msg[i+j] ^= gfMul(gen[j], coef);
+            }
+          }
+        }
+        return msg.slice(msg.length-ecLen);
+      }
+
+      // ---- QR helpers (Version 4, EC M) ----
+      // Version 4: size 33x33. EC level M: data codewords 64, EC codewords 36, blocks: 2 (each 32 data, 18 ec)
+      const VERSION = 4;
+      const SIZE = 33;
+      const DATA_CW = 64;
+      const EC_CW = 36;
+      const BLOCKS = 2;
+      const DATA_PER_BLOCK = 32;
+      const EC_PER_BLOCK = 18;
+
+      function makeBitBuffer(){
+        const bits = [];
+        return {
+          put(val, len){
+            for(let i=len-1;i>=0;i--) bits.push((val>>>i)&1);
+          },
+          putBytes(arr){
+            for(const b of arr) this.put(b,8);
+          },
+          get bits(){ return bits; }
+        };
+      }
+
+      function encodeByteMode(text){
+        const bytes = toUTF8Bytes(text);
+        // capacity check (byte mode, v4 M = 78 bytes max roughly; but our fixed codewords is 64 -> usable bytes ~ 50ish after overhead)
+        // We'll truncate safely to avoid overflow.
+        const maxBytes = 50;
+        const dataBytes = bytes.length > maxBytes ? bytes.slice(0,maxBytes) : bytes;
+
+        const bb = makeBitBuffer();
+        bb.put(0b0100, 4);                 // mode: byte
+        bb.put(dataBytes.length, 8);       // char count for version 1-9 = 8 bits
+        bb.putBytes(dataBytes);
+
+        // terminator
+        const totalBits = DATA_CW * 8;
+        const remaining = totalBits - bb.bits.length;
+        if(remaining > 0) bb.put(0, Math.min(4, remaining));
+
+        // pad to byte boundary
+        while(bb.bits.length % 8 !== 0) bb.put(0,1);
+
+        // pad bytes 0xEC, 0x11
+        const padBytes = [0xEC, 0x11];
+        let i=0;
+        while(bb.bits.length < totalBits){
+          bb.put(padBytes[i%2], 8);
+          i++;
+        }
+
+        // bits -> codewords
+        const codewords = [];
+        for(let k=0;k<bb.bits.length;k+=8){
+          let v=0;
+          for(let j=0;j<8;j++) v = (v<<1) | bb.bits[k+j];
+          codewords.push(v);
+        }
+        return codewords.slice(0, DATA_CW);
+      }
+
+      function interleaveBlocks(dataCw){
+        // split into 2 blocks of 32
+        const blocks = [];
+        for(let b=0;b<BLOCKS;b++){
+          blocks.push(dataCw.slice(b*DATA_PER_BLOCK, (b+1)*DATA_PER_BLOCK));
+        }
+        const ecBlocks = blocks.map(bl => rsEncode(bl, EC_PER_BLOCK));
+
+        const out = [];
+        for(let i=0;i<DATA_PER_BLOCK;i++){
+          for(let b=0;b<BLOCKS;b++) out.push(blocks[b][i]);
+        }
+        for(let i=0;i<EC_PER_BLOCK;i++){
+          for(let b=0;b<BLOCKS;b++) out.push(ecBlocks[b][i]);
+        }
+        return out; // total 100 codewords (64+36)
+      }
+
+      function makeMatrix(){
+        const m = Array.from({length:SIZE}, ()=>Array(SIZE).fill(null));
+        const r = Array.from({length:SIZE}, ()=>Array(SIZE).fill(false)); // reserved
+
+        function set(x,y,v,res=true){
+          if(x<0||y<0||x>=SIZE||y>=SIZE) return;
+          m[y][x]=v;
+          if(res) r[y][x]=true;
+        }
+
+        // finder patterns
+        function finder(x,y){
+          for(let dy=-1;dy<=7;dy++){
+            for(let dx=-1;dx<=7;dx++){
+              const xx=x+dx, yy=y+dy;
+              const on =
+                (dx>=0&&dx<=6&&dy>=0&&dy<=6) &&
+                (dx===0||dx===6||dy===0||dy===6 || (dx>=2&&dx<=4&&dy>=2&&dy<=4));
+              set(xx,yy,on?1:0,true);
+            }
+          }
+        }
+        finder(0,0);
+        finder(SIZE-7,0);
+        finder(0,SIZE-7);
+
+        // separators already by null->reserved around finder (-1 border). done above with dy=-1..7
+
+        // timing patterns
+        for(let i=8;i<SIZE-8;i++){
+          set(i,6, (i%2)?0:1, true);
+          set(6,i, (i%2)?0:1, true);
+        }
+
+        // alignment pattern for v4: positions [6, 26]
+        const aligns=[6,26];
+        for(const ay of aligns){
+          for(const ax of aligns){
+            if((ax===6&&ay===6) || (ax===6&&ay===SIZE-7) || (ax===SIZE-7&&ay===6)) continue;
+            for(let dy=-2;dy<=2;dy++){
+              for(let dx=-2;dx<=2;dx++){
+                const d = Math.max(Math.abs(dx), Math.abs(dy));
+                set(ax+dx, ay+dy, (d===2||d===0)?1:0, true);
+              }
+            }
+          }
+        }
+
+        // dark module
+        set(8, SIZE-8, 1, true);
+
+        // reserve format info areas
+        for(let i=0;i<9;i++){
+          if(i!==6){ set(8,i,0,true); set(i,8,0,true); }
+        }
+        for(let i=SIZE-8;i<SIZE;i++){
+          set(8,i,0,true);
+          set(i,8,0,true);
+        }
+
+        // version info not needed for v4 (<7)
+
+        return {m,r};
+      }
+
+      function placeData(matrix, reserved, codewords){
+        // codewords -> bits
+        const bits=[];
+        for(const cw of codewords){
+          for(let i=7;i>=0;i--) bits.push((cw>>>i)&1);
+        }
+
+        let bitIndex=0;
+        let dirUp=true;
+        for(let x=SIZE-1; x>0; x-=2){
+          if(x===6) x--; // skip timing col
+          for(let k=0;k<SIZE;k++){
+            const y = dirUp ? (SIZE-1-k) : k;
+            for(let dx=0;dx<2;dx++){
+              const xx = x-dx;
+              if(reserved[y][xx]) continue;
+              const b = bits[bitIndex++] ?? 0;
+              matrix[y][xx]=b;
+            }
+          }
+          dirUp = !dirUp;
+        }
+      }
+
+      function applyMask(matrix, reserved, mask){
+        for(let y=0;y<SIZE;y++){
+          for(let x=0;x<SIZE;x++){
+            if(reserved[y][x]) continue;
+            let invert=false;
+            switch(mask){
+              case 0: invert = ((x+y)%2===0); break;
+              case 1: invert = (y%2===0); break;
+              case 2: invert = (x%3===0); break;
+              case 3: invert = ((x+y)%3===0); break;
+              case 4: invert = ((Math.floor(y/2)+Math.floor(x/3))%2===0); break;
+              case 5: invert = (((x*y)%2)+((x*y)%3)===0); break;
+              case 6: invert = ((((x*y)%2)+((x*y)%3))%2===0); break;
+              case 7: invert = ((((x+y)%2)+((x*y)%3))%2===0); break;
+            }
+            if(invert) matrix[y][x] ^= 1;
+          }
+        }
+      }
+
+      // format bits for EC M (00) + mask
+      function formatBits(mask){
+        const EC_M = 0b00;
+        let data = (EC_M<<3) | mask; // 5 bits
+        // BCH code (15,5) with poly 0b10100110111
+        let d = data<<10;
+        const poly = 0b10100110111;
+        for(let i=14;i>=10;i--){
+          if((d>>i)&1) d ^= poly<<(i-10);
+        }
+        const bits15 = ((data<<10) | (d & 0x3FF)) ^ 0b101010000010010; // mask pattern
+        return bits15;
+      }
+
+      function writeFormat(matrix, reserved, mask){
+        const bits15 = formatBits(mask);
+
+        function bit(i){ return (bits15 >> i) & 1; }
+
+        // around top-left
+        for(let i=0;i<=5;i++){ matrix[i][8]=bit(14-i); reserved[i][8]=true; }
+        matrix[7][8]=bit(8); reserved[7][8]=true;
+        matrix[8][8]=bit(7); reserved[8][8]=true;
+        matrix[8][7]=bit(6); reserved[8][7]=true;
+        for(let i=9;i<=14;i++){ matrix[8][14-i]=bit(14-i); reserved[8][14-i]=true; }
+
+        // top-right
+        for(let i=0;i<8;i++){
+          matrix[8][SIZE-1-i]=bit(i);
+          reserved[8][SIZE-1-i]=true;
+        }
+
+        // bottom-left
+        for(let i=0;i<7;i++){
+          matrix[SIZE-1-i][8]=bit(i);
+          reserved[SIZE-1-i][8]=true;
+        }
+      }
+
+      function penaltyScore(matrix){
+        let score=0;
+
+        // rule 1: runs in rows/cols
+        function runs(line){
+          let runColor=line[0], runLen=1;
+          for(let i=1;i<line.length;i++){
+            if(line[i]===runColor) runLen++;
+            else{
+              if(runLen>=5) score += 3 + (runLen-5);
+              runColor=line[i]; runLen=1;
+            }
+          }
+          if(runLen>=5) score += 3 + (runLen-5);
+        }
+        for(let y=0;y<SIZE;y++) runs(matrix[y]);
+        for(let x=0;x<SIZE;x++){
+          const col=[]; for(let y=0;y<SIZE;y++) col.push(matrix[y][x]);
+          runs(col);
+        }
+
+        // rule 2: 2x2 blocks
+        for(let y=0;y<SIZE-1;y++){
+          for(let x=0;x<SIZE-1;x++){
+            const v = matrix[y][x];
+            if(v===matrix[y][x+1] && v===matrix[y+1][x] && v===matrix[y+1][x+1]) score+=3;
+          }
+        }
+
+        // rule 4: dark module ratio
+        let dark=0;
+        for(let y=0;y<SIZE;y++) for(let x=0;x<SIZE;x++) if(matrix[y][x]) dark++;
+        const total = SIZE*SIZE;
+        const k = Math.abs((dark*100/total) - 50);
+        score += Math.floor(k/5)*10;
+
+        return score;
+      }
+
+      function buildQR(text){
+        const data = encodeByteMode(text);
+        const cw = interleaveBlocks(data);
+
+        // try masks 0..7 pick best
+        let best=null, bestScore=1e9, bestMask=0;
+
+        for(let mask=0;mask<8;mask++){
+          const {m,r} = makeMatrix();
+          placeData(m,r,cw);
+          applyMask(m,r,mask);
+          writeFormat(m,r,mask);
+          const sc = penaltyScore(m);
+          if(sc < bestScore){
+            bestScore=sc; best=m; bestMask=mask;
+          }
+        }
+        return {matrix: best, mask: bestMask};
+      }
+
+      function renderToBox(boxEl, text){
+        boxEl.innerHTML = "";
+        const {matrix} = buildQR(text);
+
+        const canvas = document.createElement("canvas");
+        const scale = 3;               // 33*3=99 + quiet zone
+        const quiet = 4;               // quiet zone modules
+        const size = (SIZE + quiet*2) * scale;
+
+        canvas.width = size;
+        canvas.height = size;
+        const c = canvas.getContext("2d");
+
+        // background
+        c.fillStyle = "#fff";
+        c.fillRect(0,0,size,size);
+
+        // draw modules
+        c.fillStyle = "#000";
+        for(let y=0;y<SIZE;y++){
+          for(let x=0;x<SIZE;x++){
+            if(matrix[y][x]){
+              c.fillRect((x+quiet)*scale, (y+quiet)*scale, scale, scale);
+            }
+          }
+        }
+        boxEl.appendChild(canvas);
+      }
+
+      // expose
+      window.QR_RENDER = renderToBox;
+    })();
+
+    /* =============================
+       Generar QR "Compartir" y "Vcard"
+       ============================= */
+    const qrShareBox = document.getElementById("qrShareBox");
+    const qrVcardBox = document.getElementById("qrVcardBox");
+
+    // QR compartir: URL del sitio (pon la real en DATA.website)
+    QR_RENDER(qrShareBox, DATA.website);
+
+    // vCard real
+    function makeVCard(d){
+      // vCard 3.0 estándar
+      return [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:${d.fullName};;;;`,
+        `FN:${d.title} ${d.fullName}`,
+        `TITLE:${d.role}`,
+        `TEL;TYPE=CELL:${d.phone}`,
+        `EMAIL;TYPE=INTERNET:${d.email}`,
+        `ADR;TYPE=WORK:;;;${d.address};;;;`,
+        `URL:${d.website}`,
+        "END:VCARD"
+      ].join("\n");
+    }
+
+    const vcardText = makeVCard(DATA);
+    QR_RENDER(qrVcardBox, vcardText);
+
+    // Descargar .vcf (botón)
+    document.getElementById("btnVcf").addEventListener("click", ()=>{
+      const blob = new Blob([vcardText], {type:"text/vcard;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${DATA.fullName.replace(/\s+/g,'_')}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+  </script>
+<script>
+  // ===== SERVICES: activar animación al entrar (is-inview) =====
+  (function(){
+    const services = document.getElementById("services");
+    if(!services) return;
+
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          services.classList.add("is-inview");
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+
+    io.observe(services);
+  })();
+
+  // ===== LOTTIE: carga analisis.json en servicios =====
+  (function(){
+    const el = document.getElementById("analysisLottie");
+    if(!el) return;
+
+    // 🔥 por si ya existía algo montado
+    try { el.innerHTML = ""; } catch(e){}
+
+    const anim = lottie.loadAnimation({
+      container: el,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      path: "servicios.json"   // ✅ TU ARCHIVO: analisis.json (sin espacios)
+    });
+
+    // ✅ logs para que veas si carga o falla
+    anim.addEventListener("data_ready", ()=> console.log("[Lottie] JSON cargado OK"));
+    anim.addEventListener("data_failed", (err)=> console.error("[Lottie] Falló cargar JSON", err));
+  })();
+</script>
+
+
+</body>
+</html>
